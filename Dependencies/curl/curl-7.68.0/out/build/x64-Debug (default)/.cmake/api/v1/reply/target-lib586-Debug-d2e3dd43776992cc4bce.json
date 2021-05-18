@@ -1,0 +1,259 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "tests/libtest/lib586.exe"
+		},
+		{
+			"path" : "tests/libtest/lib586.pdb"
+		}
+	],
+	"backtrace" : 2,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+			"setup_test",
+			"target_link_libraries",
+			"add_definitions",
+			"set_target_properties",
+			"include_directories"
+		],
+		"files" : 
+		[
+			"tests/libtest/CMakeLists.txt",
+			"CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 31,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 4,
+				"parent" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 17,
+				"parent" : 1
+			},
+			{
+				"file" : 1
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 1132,
+				"parent" : 4
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 19,
+				"parent" : 1
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 1146,
+				"parent" : 4
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 932,
+				"parent" : 4
+			},
+			{
+				"command" : 5,
+				"file" : 1,
+				"line" : 72,
+				"parent" : 4
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 31,
+				"parent" : 0
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 7,
+				"parent" : 10
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : " /DWIN32 /D_WINDOWS /W4 /MDd /Zi /Ob0 /Od /RTC1"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 5,
+					"define" : "HAVE_CONFIG_H"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "LIB586"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "_CRT_NONSTDC_NO_DEPRECATE"
+				},
+				{
+					"backtrace" : 7,
+					"define" : "_CRT_SECURE_NO_DEPRECATE"
+				},
+				{
+					"backtrace" : 8,
+					"define" : "_WIN32_WINNT=0x0600"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 9,
+					"path" : "C:/Users/jeff/Files/Cheating/darklight-master/Dependencies/curl/curl-7.68.0/include"
+				},
+				{
+					"backtrace" : 11,
+					"path" : "C:/Users/jeff/Files/Cheating/darklight-master/Dependencies/curl/curl-7.68.0/lib"
+				},
+				{
+					"backtrace" : 11,
+					"path" : "C:/Users/jeff/Files/Cheating/darklight-master/Dependencies/curl/curl-7.68.0/out/build/x64-Debug (default)/lib"
+				},
+				{
+					"backtrace" : 11,
+					"path" : "C:/Users/jeff/Files/Cheating/darklight-master/Dependencies/curl/curl-7.68.0/out/build/x64-Debug (default)/include"
+				},
+				{
+					"backtrace" : 11,
+					"path" : "C:/Users/jeff/Files/Cheating/darklight-master/Dependencies/curl/curl-7.68.0/tests/libtest"
+				}
+			],
+			"language" : "C",
+			"sourceIndexes" : 
+			[
+				0,
+				1
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 3,
+			"id" : "libcurl::@306ed2d68c6501e8728f"
+		}
+	],
+	"id" : "lib586::@61d83fdf58edd39daf0b",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "/DWIN32 /D_WINDOWS /W4 /MDd /Zi /Ob0 /Od /RTC1",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "/machine:x64 /MANIFEST:NO /debug /INCREMENTAL /subsystem:console",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "..\\..\\lib\\libcurl-d_imp.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "wldap32.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "winmm.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "ws2_32.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "advapi32.lib",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib",
+				"role" : "libraries"
+			}
+		],
+		"language" : "C"
+	},
+	"name" : "lib586",
+	"nameOnDisk" : "lib586.exe",
+	"paths" : 
+	{
+		"build" : "tests/libtest",
+		"source" : "tests/libtest"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				1
+			]
+		},
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				2
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "tests/libtest/lib586.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"compileGroupIndex" : 0,
+			"path" : "tests/libtest/first.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "tests/libtest/test.h",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "EXECUTABLE"
+}

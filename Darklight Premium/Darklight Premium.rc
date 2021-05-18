@@ -1,0 +1,95 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PNG
+//
+
+IDB_PNG1                PNG                     "..\\Dependencies\\images\\backgroundTexture.png"
+
+IDB_PNG2                PNG                     "..\\Dependencies\\images\\colorPicker.png"
+
+IDB_PNG3                PNG                     "..\\Dependencies\\images\\transparentBackground.png"
+
+IDB_PNG4                PNG                     "..\\Dependencies\\images\\transparentBackgroundTwo.png"
+
+IDB_PNG5                PNG                     "..\\Dependencies\\images\\catgirl0.png"
+
+IDB_PNG6                PNG                     "..\\Dependencies\\images\\catgirl1.png"
+
+IDB_PNG7                PNG                     "..\\Dependencies\\images\\catgirl2.png"
+
+IDB_PNG8                PNG                     "..\\Dependencies\\images\\catgirl3.png"
+
+IDB_PNG9                PNG                     "..\\Dependencies\\images\\catgirl4.png"
+
+IDB_PNG10               PNG                     "..\\Dependencies\\images\\catgirl5.png"
+
+IDB_PNG11               PNG                     "..\\Dependencies\\images\\catgirl6.png"
+
+IDB_PNG12               PNG                     "..\\Dependencies\\images\\catgirl7.png"
+
+IDB_PNG13               PNG                     "..\\Dependencies\\images\\groupboxTexture.png"
+
+IDB_PNG14               PNG                     "..\\Dependencies\\images\\darklightLogo.png"
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
