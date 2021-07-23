@@ -163,31 +163,31 @@ Vector CAimbot::GetBestHitbox(CBaseEntity* pEntity)
 
 	vecReturn = pEntity->GetHitboxPosition(iBestHitbox);
 
-	if (!g_Backtrack.vRecords[pEntity->GetIndex()].empty() &&
-		C::Get<bool>(Vars.bBacktrack))
-	{
-		auto vecBacktrack = g_Backtrack.vRecords[pEntity->GetIndex()];
+	//if (!g_Backtrack.vRecords[pEntity->GetIndex()].empty() &&
+	//	C::Get<bool>(Vars.bBacktrack))
+	//{
+	//	auto vecBacktrack = g_Backtrack.vRecords[pEntity->GetIndex()];
 
-		int iTicks = 0;
-		for (auto i = 0; i < vecBacktrack.size() && iTicks < C::Get<int>(Vars.iBacktrackMax); i++) {
-			iTicks++;
+	//	int iTicks = 0;
+	//	for (auto i = 0; i < vecBacktrack.size() && iTicks < C::Get<int>(Vars.iBacktrackMax); i++) {
+	//		iTicks++;
 
-			Vector vecBacktrackHitbox = pEntity->GetBacktrackHitboxPosition(iBestHitbox, i);
-			if (vecBacktrackHitbox.IsZero())
-				continue;
+	//		Vector vecBacktrackHitbox = pEntity->GetBacktrackHitboxPosition(iBestHitbox, i);
+	//		if (vecBacktrackHitbox.IsZero())
+	//			continue;
 
-			QAngle angCalc = M::CalcAngle(m_vLocalPosition, vecBacktrackHitbox);
-			float flFOV = M::GetFOV(m_pCmd->angViewPoint + m_pLocal->GetPunch() * 2.0f, angCalc);
+	//		QAngle angCalc = M::CalcAngle(m_vLocalPosition, vecBacktrackHitbox);
+	//		float flFOV = M::GetFOV(m_pCmd->angViewPoint + m_pLocal->GetPunch() * 2.0f, angCalc);
 
-			if (flFOV < flBestFOV && vecBacktrack.at(i).bIsValid) {
-				flBestFOV = flFOV;
-				flBestSimTime = vecBacktrack.at(i).flSimTime;
-				vecReturn = vecBacktrackHitbox;
-			}
-		}
+	//		if (flFOV < flBestFOV && vecBacktrack.at(i).bIsValid) {
+	//			flBestFOV = flFOV;
+	//			flBestSimTime = vecBacktrack.at(i).flSimTime;
+	//			vecReturn = vecBacktrackHitbox;
+	//		}
+	//	}
 
-		m_flSimTime = flBestSimTime;
-	}
+	//	m_flSimTime = flBestSimTime;
+	//}
 
 	return m_pLocal->IsVisible(pEntity, vecReturn) ? vecReturn : Vector();
 }
@@ -217,10 +217,10 @@ void CAimbot::MoveViewAngles(AimbotTarget_t target)
 	if (IsNotSilent(target.flFOV))
 		I::Engine->SetViewAngles(m_pCmd->angViewPoint);
 
-	if (m_pCmd->iButtons & IN_ATTACK && m_flSimTime != -1 &&
-		C::Get<bool>(Vars.bBacktrack)) {
-		m_pCmd->iTickCount = M_TIME_TO_TICKS(m_flSimTime);
-	}
+	//if (m_pCmd->iButtons & IN_ATTACK && m_flSimTime != -1 &&
+	//	C::Get<bool>(Vars.bBacktrack)) {
+	//	/*m_pCmd->iTickCount = M_TIME_TO_TICKS(m_flSimTime);*/
+	//}
 }
 
 void CAimbot::RCS()

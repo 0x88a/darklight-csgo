@@ -208,7 +208,7 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 		g_Misc.NullStrafe(pCmd, pLocal);
 		g_Misc.MovementRecorder(pCmd, pLocal);
 		g_Misc.Blockbot(pCmd, pLocal);
-		g_Backtrack.Run(pCmd, pLocal, bSendPacket);
+		/*g_Backtrack.Run(pCmd, pLocal, bSendPacket);*/
 		g_Aimbot.Run(pCmd, pLocal, bSendPacket);
 		g_Ragebot.Run(pCmd, pLocal, bSendPacket);
 		g_Triggerbot.Run(pCmd, pLocal);

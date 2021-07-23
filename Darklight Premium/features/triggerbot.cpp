@@ -83,9 +83,9 @@ void CTriggerBot::Run(CUserCmd* pCmd, CBaseEntity* pLocal)
                 !pLocal->IsEnemy(pEntity) || pEntity->GetClientClass()->nClassID != EClassIndex::CCSPlayer)
                 continue;
 
-            auto backtrack = g_Backtrack.vRecords[i];
-            if (backtrack.empty())
-                continue;
+            //auto backtrack = g_Backtrack.vRecords[i];
+            //if (backtrack.empty())
+            //    continue;
 
             auto hitbox = pEntity->GetHitboxPosition(HITBOX_HEAD);
             if (hitbox.IsZero()) { continue; }
@@ -107,7 +107,7 @@ void CTriggerBot::Run(CUserCmd* pCmd, CBaseEntity* pLocal)
                 if (pLocal->CanShoot((CWeaponCSBase*)pWeapon))
                 {
                     pCmd->iButtons |= IN_ATTACK;
-                    pCmd->iTickCount = TIME_TO_TICKS(g_Backtrack.vRecords[best_target->GetIndex()].at(*record).flSimTime);
+                    /*pCmd->iTickCount = TIME_TO_TICKS(g_Backtrack.vRecords[best_target->GetIndex()].at(*record).flSimTime);*/
                 }
             }
         }
@@ -150,7 +150,7 @@ std::optional<int> CTriggerBot::TargetRecord(CBaseEntity* entity, CBaseCombatWea
     if (!set)  return {};
     int iTicks = 0;
 
-    for (auto j = 0; j < g_Backtrack.vRecords[entity->GetIndex()].size() && iTicks < C::Get<int>(Vars.iBacktrackMax); j++) {
+  /*  for (auto j = 0; j < g_Backtrack.vRecords[entity->GetIndex()].size() && iTicks < C::Get<int>(Vars.iBacktrackMax); j++) {
         iTicks++;
         for (size_t i{}; i < set->nHitboxes; ++i)
         {
@@ -180,6 +180,6 @@ std::optional<int> CTriggerBot::TargetRecord(CBaseEntity* entity, CBaseCombatWea
                     return j;
             }
         }
-    }
+    }*/
     return {};
 }

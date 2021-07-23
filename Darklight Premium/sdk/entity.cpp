@@ -95,42 +95,42 @@ Vector CBaseEntity::GetHitboxPosition(int iHitbox)
 	return Vector{ };
 }
 
-Vector CBaseEntity::GetBacktrackHitboxPosition(int iHitbox, int iBacktrackTick)
-{
-	if (iHitbox <= HITBOX_INVALID || iHitbox >= HITBOX_MAX)
-		throw std::out_of_range(_("given invalid hitbox index for gethitboxposition"));
-
-	if (!C::Get<int>(Vars.iBacktrackMax) ||
-		!C::Get<bool>(Vars.bBacktrack))
-		return Vector{ };
-
-	const auto vecBacktrack = g_Backtrack.vRecords[this->GetIndex()];
-
-	if (vecBacktrack.empty() ||
-		!vecBacktrack.at(iBacktrackTick).matrix)
-		return Vector{ };
-
-	if (const auto pModel = this->GetModel(); pModel != nullptr)
-	{
-		if (auto pStudioModel = I::ModelInfo->GetStudioModel(pModel); pStudioModel != nullptr)
-		{
-			if (auto pHitbox = pStudioModel->GetHitbox(iHitbox, 0); pHitbox != nullptr)
-			{
-				if (this->SetupBones((matrix3x4_t*)vecBacktrack.at(iBacktrackTick).matrix, MAXSTUDIOBONES, BONE_USED_BY_HITBOX, 0.f))
-				{
-					Vector vecMin = { }, vecMax = { };
-
-					vecMin = M::VectorTransform(pHitbox->vecBBMin, vecBacktrack.at(iBacktrackTick).matrix[pHitbox->iBone]);
-					vecMax = M::VectorTransform(pHitbox->vecBBMax, vecBacktrack.at(iBacktrackTick).matrix[pHitbox->iBone]);
-
-					return (vecMin + vecMax) * 0.5f;
-				}
-			}
-		}
-	}
-
-	return Vector{ };
-}
+//Vector CBaseEntity::GetBacktrackHitboxPosition(int iHitbox, int iBacktrackTick)
+//{
+//	//if (iHitbox <= HITBOX_INVALID || iHitbox >= HITBOX_MAX)
+//	//	throw std::out_of_range(_("given invalid hitbox index for gethitboxposition"));
+//
+//	//if (!C::Get<int>(Vars.iBacktrackMax) ||
+//	//	!C::Get<bool>(Vars.bBacktrack))
+//	//	return Vector{ };
+//
+//	/*const auto vecBacktrack = g_Backtrack.vRecords[this->GetIndex()];*/
+//
+//	//if (vecBacktrack.empty() ||
+//	//	!vecBacktrack.at(iBacktrackTick).matrix)
+//	//	return Vector{ };
+//
+//	/*if (const auto pModel = this->GetModel(); pModel != nullptr)
+//	{
+//		if (auto pStudioModel = I::ModelInfo->GetStudioModel(pModel); pStudioModel != nullptr)
+//		{
+//			if (auto pHitbox = pStudioModel->GetHitbox(iHitbox, 0); pHitbox != nullptr)
+//			{
+//				if (this->SetupBones((matrix3x4_t*)vecBacktrack.at(iBacktrackTick).matrix, MAXSTUDIOBONES, BONE_USED_BY_HITBOX, 0.f))
+//				{
+//					Vector vecMin = { }, vecMax = { };
+//
+//					vecMin = M::VectorTransform(pHitbox->vecBBMin, vecBacktrack.at(iBacktrackTick).matrix[pHitbox->iBone]);
+//					vecMax = M::VectorTransform(pHitbox->vecBBMax, vecBacktrack.at(iBacktrackTick).matrix[pHitbox->iBone]);
+//
+//					return (vecMin + vecMax) * 0.5f;
+//				}
+//			}
+//		}
+//	}*/
+//
+//	return Vector{ };
+//}
 
 Vector CBaseEntity::GetHitGroupPosition(int iHitGroup)
 {

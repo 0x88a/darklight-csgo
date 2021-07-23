@@ -342,10 +342,6 @@ void GUI::Run()
 
 			CONTROLS::BeginGroupbox(_("ESP Preview"), 280, 0);
 
-			/* Using cancer C style casts ZZZ - tomo */
-			/* Also this could be done better if I was using my menu src since it has preview implemented. */
-			/* But I don't have that src anymore kek */
-
 			Vector2D m_vPlacement = { CONTROLS::m_vOffset.x + 20, CONTROLS::m_vOffset.y };
 			Vector2D m_vBoxSize = { 150, 230 };
 

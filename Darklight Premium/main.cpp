@@ -57,7 +57,7 @@ std::string AuthenticateUser(std::string hwid) {
 	pCurl = curl_easy_init();
 	CURLcode res;
 
-	curl_easy_setopt(pCurl, CURLOPT_URL, _("https://darklight.xyz/global/loader/auth.php"));
+	curl_easy_setopt(pCurl, CURLOPT_URL, _("http://nullus.io/global/loader/auth.php"));
 	curl_easy_setopt(pCurl, CURLOPT_POST, 1L);
 
 	curl_easy_setopt(pCurl, CURLOPT_USERAGENT, _("Mozilla/4.0 (Windows NT 1.3; Win32; x32; rv:70.5) Gecko/10111101 Firefox/70.201"));
@@ -93,21 +93,21 @@ DWORD WINAPI OnDllAttach(LPVOID lpParameter)
 
 		curl_global_init(CURL_GLOBAL_ALL);
 
-		std::string szResponse = AuthenticateUser(machineid::machineHash());
+		//std::string szResponse = AuthenticateUser(machineid::machineHash());
 
-		toClipboard(machineid::machineHash());
+		//toClipboard(machineid::machineHash());
 
-		if (szResponse == _("No User"))
-			throw std::runtime_error(("Bad HWID. Copied to clipboard."));
+		//if (szResponse == _("No User"))
+		//	throw std::runtime_error(("Bad HWID. Copied to clipboard."));
 
-		if (szResponse == _("Internal server error"))
-			throw std::runtime_error(("Cheat Down. PANIC!!11111"));
-		
-		if (szResponse == _("Bad Email"))
-			throw std::runtime_error(("Please verify your email."));
+		//if (szResponse == _("Internal server error"))
+		//	throw std::runtime_error(("Cheat Down. PANIC!!11111"));
+		//
+		//if (szResponse == _("Bad Email"))
+		//	throw std::runtime_error(("Please verify your email."));
 
-		if (szResponse == _("Wrong Group"))
-			throw std::runtime_error(("Banned or No Subscription."));
+		//if (szResponse == _("Wrong Group"))
+		//	throw std::runtime_error(("Banned or No Subscription."));
 
 		#if DEBUG_CONSOLE
 		if (!L::Attach(_("Darklight Debug Console")))
@@ -118,7 +118,7 @@ DWORD WINAPI OnDllAttach(LPVOID lpParameter)
 		//L::ofsFile.open(C::GetWorkingPath().append(_("debug.log")), std::ios::out | std::ios::trunc);
 		#endif
 
-		G::szUsername = json::parse(szResponse)[_("username")];
+		G::szUsername = "darklight"; //json::parse(szResponse)[_("username")];
 		toClipboard("");
 
 		if (!I::Setup())
@@ -127,8 +127,8 @@ DWORD WINAPI OnDllAttach(LPVOID lpParameter)
 		L::Print(_("Interfaces captured"));
 
 
-		if (strcmp(I::Engine->GetProductVersionString(), _("1.37.9.1")) != 0)
-			throw std::runtime_error(_("Bad client version."));
+		//if (strcmp(I::Engine->GetProductVersionString(), _("1.37.9.4")) != 0)
+		//	throw std::runtime_error(_(I::Engine->GetProductVersionString()));
 
 		#if DEBUG_CONSOLE
 		if (strcmp(I::Engine->GetProductVersionString(), _("1.37.9.1")) != 0)

@@ -688,7 +688,7 @@ public:
 	Vector				GetBonePosition(int iBone);
 	int					GetBoneByHash(const FNV1A_t uBoneHash);
 	Vector				GetHitboxPosition(int iHitbox);
-	Vector				GetBacktrackHitboxPosition(int iHitbox, int iBacktrackTick);
+	/*Vector				GetBacktrackHitboxPosition(int iHitbox, int iBacktrackTick);*/
 	Vector				GetHitGroupPosition(int iHitGroup);
 	void				ModifyEyePosition(CBasePlayerAnimState* pAnimState, Vector* vecPosition);
 	int					PostThink();
