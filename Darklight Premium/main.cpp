@@ -57,7 +57,7 @@ std::string AuthenticateUser(std::string hwid) {
 	pCurl = curl_easy_init();
 	CURLcode res;
 
-	curl_easy_setopt(pCurl, CURLOPT_URL, _("http://nullus.io/global/loader/auth.php"));
+	curl_easy_setopt(pCurl, CURLOPT_URL, _("http://google.com/"));
 	curl_easy_setopt(pCurl, CURLOPT_POST, 1L);
 
 	curl_easy_setopt(pCurl, CURLOPT_USERAGENT, _("Mozilla/4.0 (Windows NT 1.3; Win32; x32; rv:70.5) Gecko/10111101 Firefox/70.201"));
