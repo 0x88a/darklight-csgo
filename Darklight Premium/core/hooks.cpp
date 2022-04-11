@@ -504,7 +504,7 @@ bool FASTCALL H::hkIsConnected(IEngineClient* thisptr, int edx)
 	// sub above the string
 	// sub in that function
 	// .text : 103A2120 84 C0		test    al, al; Logical Compare
-	static std::uintptr_t uLoadoutAllowedReturn = (MEM::FindPattern(CLIENT_DLL, _("75 04 B0 01 5F")) - 0x2);
+	static std::uintptr_t uLoadoutAllowedReturn = (MEM::FindPattern(CLIENT_DLL, _("84 C0 75 05 B0 01 5F")) - 0x2);
 
 	if (_ReturnAddress() == (void*)uLoadoutAllowedReturn && C::Get<std::deque<bool>>(Vars.vecMatchmaking).at(0))
 		return false;
