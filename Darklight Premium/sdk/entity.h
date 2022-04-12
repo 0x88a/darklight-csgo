@@ -577,7 +577,7 @@ public:
 	[[nodiscard]] CAnimationLayer* GetAnimationOverlays()
 	{
 		// @ida = 8B 89 ? ? ? ? 8D 0C D1 + 0x2
-		return *(CAnimationLayer**)((std::uintptr_t)this + 0x2980);
+		return *(CAnimationLayer**)((std::uintptr_t)this + 0x2990);
 	}
 
 	[[nodiscard]] inline CAnimationLayer* GetAnimationLayer(int nLayer)

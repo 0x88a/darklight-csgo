@@ -32,10 +32,55 @@ using json = nlohmann::json;
 
 CURL* pCurl;
 
+__forceinline uint8_t* find_sig_ida(HMODULE module, std::string str_byte_array) {
+	static auto pattern_to_byte = [](const char* pattern) {
+		auto bytes = std::vector<int>{};
+		auto start = const_cast<char*>(pattern);
+		auto end = const_cast<char*>(pattern) + strlen(pattern);
+
+		for (auto current = start; current < end; ++current) {
+			if (*current == '?') {
+				++current;
+				if (*current == '?')
+					++current;
+				bytes.push_back(-1);
+			}
+			else {
+				bytes.push_back(strtoul(current, &current, 16));
+			}
+		}
+		return bytes;
+	};
+
+	auto dos_header = (PIMAGE_DOS_HEADER)module;
+	auto nt_headers = (PIMAGE_NT_HEADERS)((std::uint8_t*)module + dos_header->e_lfanew);
+
+	auto size_of_image = nt_headers->OptionalHeader.SizeOfImage;
+	auto pattern_bytes = pattern_to_byte(str_byte_array.c_str());
+	auto scan_bytes = reinterpret_cast<std::uint8_t*>(module);
+
+	auto s = pattern_bytes.size();
+	auto d = pattern_bytes.data();
+
+	for (auto i = 0ul; i < size_of_image - s; ++i) {
+		bool found = true;
+		for (auto j = 0ul; j < s; ++j) {
+			if (scan_bytes[i + j] != d[j] && d[j] != -1) {
+				found = false;
+				break;
+			}
+		}
+		if (found) {
+			return &scan_bytes[i];
+		}
+	}
+	return nullptr;
+}
+
 void toClipboard(const std::string& s) {
 	OpenClipboard(nullptr);
 	EmptyClipboard();
-	HGLOBAL hg = GlobalAlloc(GMEM_MOVEABLE, (long)s.size() +1);
+	HGLOBAL hg = GlobalAlloc(GMEM_MOVEABLE, (long)s.size() + 1);
 	if (!hg) {
 		CloseClipboard();
 		return;
@@ -89,6 +134,18 @@ DWORD WINAPI OnDllAttach(LPVOID lpParameter)
 		while (GetModuleHandle(SERVERBROWSER_DLL) == nullptr)
 			std::this_thread::sleep_for(200ms);
 
+		long amongus = 0x69690004C201B0;
+		static std::string sig = ("55 8B EC 56 8B F1 33 C0 57 8B 7D 08");
+
+		LPCWSTR modules[]
+		{
+			L"client.dll",
+			L"engine.dll",
+			L"server.dll",
+			L"studiorender.dll",
+			L"materialsystem.dll"
+		};
+
 		//ForceBluescreen(STATUS_ASSERTION_FAILURE);
 
 		curl_global_init(CURL_GLOBAL_ALL);
@@ -109,14 +166,14 @@ DWORD WINAPI OnDllAttach(LPVOID lpParameter)
 		//if (szResponse == _("Wrong Group"))
 		//	throw std::runtime_error(("Banned or No Subscription."));
 
-		#if DEBUG_CONSOLE
+#if DEBUG_CONSOLE
 		if (!L::Attach(_("Darklight Debug Console")))
 			throw std::runtime_error(_("Failed to attach console"));
 
 		L::Print(_("Console opened"));
-		#else
-		//L::ofsFile.open(C::GetWorkingPath().append(_("debug.log")), std::ios::out | std::ios::trunc);
-		#endif
+#else
+//L::ofsFile.open(C::GetWorkingPath().append(_("debug.log")), std::ios::out | std::ios::trunc);
+#endif
 
 		G::szUsername = "darklight"; //json::parse(szResponse)[_("username")];
 		toClipboard("");
@@ -130,14 +187,14 @@ DWORD WINAPI OnDllAttach(LPVOID lpParameter)
 		//if (strcmp(I::Engine->GetProductVersionString(), _("1.37.9.4")) != 0)
 		//	throw std::runtime_error(_(I::Engine->GetProductVersionString()));
 
-		#if DEBUG_CONSOLE
+#if DEBUG_CONSOLE
 		if (strcmp(I::Engine->GetProductVersionString(), _("1.37.9.1")) != 0)
 		{
 			L::PushConsoleColor(FOREGROUND_RED | FOREGROUND_YELLOW);
 			L::Print(fmt::format(_("[Warning] Version doesnt match! current CS:GO version: {}"), I::Engine->GetProductVersionString()));
 			L::PopConsoleColor();
 		}
-		#endif
+#endif
 
 		if (!CNetvarManager::Get().Setup(_("netvars.txt")))
 			throw std::runtime_error(_("Failed to initialize netvars"));
@@ -158,7 +215,7 @@ DWORD WINAPI OnDllAttach(LPVOID lpParameter)
 		L::Print(_("Entity Listener initialized"));
 
 		U::EventListener.Setup(
-			{ 
+			{
 				_("player_hurt"),
 				_("item_purchase"),
 				_("player_given_c4"),
@@ -219,22 +276,22 @@ DWORD WINAPI OnDllDetach(LPVOID lpParameter)
 {
 	while (!GUI::UTILS::KeyPressed(VK_F7))
 
-	#if DEBUG_CONSOLE
-	L::Detach();
-	#else
-	if (L::ofsFile.is_open())
-		L::ofsFile.close();
-	#endif
+#if DEBUG_CONSOLE
+		//L::Detach();
+#else
+		if (L::ofsFile.is_open())
+			L::ofsFile.close();
+#endif
 
-	U::EntityListener.Destroy();
+	//U::EntityListener.Destroy();
 
-	U::EventListener.Destroy();
+	//U::EventListener.Destroy();
 
-	I::ConVar->FindVar(_("crosshair"))->SetValue(true);
+	//I::ConVar->FindVar(_("crosshair"))->SetValue(true);
 
-	#if 0
+#if 0
 	P::Restore();
-	#endif
+#endif
 
 	H::Restore();
 
@@ -256,6 +313,14 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
 
 		if (auto hThread = CreateThread(nullptr, 0U, OnDllAttach, hModule, 0UL, nullptr); hThread != nullptr)
 			CloseHandle(hThread);
+
+		//if (auto hThread = CreateThread(nullptr, 0U, OnDllDetach, hModule, 0UL, nullptr); hThread != nullptr)
+		//	CloseHandle(hThread);
+
+		return TRUE;
+	}
+	else if (dwReason == DLL_PROCESS_DETACH)
+	{
 
 		if (auto hThread = CreateThread(nullptr, 0U, OnDllDetach, hModule, 0UL, nullptr); hThread != nullptr)
 			CloseHandle(hThread);

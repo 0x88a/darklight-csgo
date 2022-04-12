@@ -181,7 +181,7 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 
 	const volatile auto vlBaseAddress = *(std::uintptr_t*)((std::uintptr_t)_AddressOfReturnAddress() - sizeof(std::uintptr_t));
 
-	bool& bSendPacket = *(bool*)(vlBaseAddress - 0x1C);
+	bool& bSendPacket = *(bool*)(vlBaseAddress - 0x34);
 
 	QAngle angOldViewPoint = pCmd->angViewPoint;
 
@@ -206,7 +206,6 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 	g_Prediction.Start(pCmd, pLocal);
 	{
 		g_Misc.NullStrafe(pCmd, pLocal);
-		g_Misc.MovementRecorder(pCmd, pLocal);
 		g_Misc.Blockbot(pCmd, pLocal);
 		/*g_Backtrack.Run(pCmd, pLocal, bSendPacket);*/
 		g_Aimbot.Run(pCmd, pLocal, bSendPacket);
@@ -219,6 +218,7 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 	g_Misc.EdgeJump(pCmd, pLocal, iFlags);
 	g_Misc.JumpBug(pCmd, pLocal, iFlags);
 	g_Misc.EdgeBug(pCmd, pLocal, iFlags);
+	g_Misc.MovementRecorder(pCmd, pLocal);
 
 	g_Misc.CorrectMovement(pLocal, pCmd, angOldViewPoint);
 
