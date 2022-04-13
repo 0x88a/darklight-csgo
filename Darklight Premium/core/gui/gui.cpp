@@ -482,6 +482,15 @@ void GUI::Run()
 				CONTROLS::Keybind(_("EDGEBUG_KEY"), &C::Get<int>(Vars.iEdgeBugKey), &C::Get<int>(Vars.iEdgeBugKeyMethod));
 				CONTROLS::Checkbox(_("Edge bug"), &C::Get<bool>(Vars.bEdgeBug));
 
+				CONTROLS::Keybind(_("OPTIMIZER_KEY"), &C::Get<int>(Vars.iStrafeOptimizer_Key), &C::Get<int>(Vars.iStrafeOptimizer_Key_Method));
+				CONTROLS::Checkbox(_("Strafe Optimizer"), &C::Get<bool>(Vars.bStrafeOptimizer_Enabeld));
+				if (C::Get<bool>(Vars.bStrafeOptimizer_Enabeld))
+				{
+					CONTROLS::Slider(_("Min Speed"), &C::Get<int>(Vars.iStrafeOptimizer_Min_Speed), 200, 400, "");
+					CONTROLS::Slider(_("Desired Gain"), &C::Get<int>(Vars.iStrafeOptimizer_Desired_Gain), 0, 100, "");
+					
+				}
+
 				CONTROLS::Keybind(_("blockbot"), &C::Get<int>(Vars.iBlockbotKey), &C::Get<int>(Vars.iBlockbotKeyMethod));
 				CONTROLS::Combobox(_("Blockbot"), { _("Off"), _("Match speed"), _("Maximum") }, &C::Get<int>(Vars.iBlockbot));
 			}

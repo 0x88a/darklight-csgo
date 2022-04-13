@@ -309,6 +309,82 @@ void CMiscellaneous::Blockbot(CUserCmd* pCmd, CBaseEntity* pLocal)
 		else if (yaw_delta < -0.25) { G::cmd.flSideMove = flBestSpeed; }
 	}
 }
+void CMiscellaneous::StrafeOptimizer(CUserCmd* cmd, CBaseEntity* pLocal)
+{
+	static bool bToggled = false;
+	if (!C::Get<bool>(Vars.bStrafeOptimizer_Enabeld) ||
+		!GUI::UTILS::KeybindMethod(C::Get<int>(Vars.iStrafeOptimizer_Key), C::Get<int>(Vars.iStrafeOptimizer_Key_Method), &bToggled))
+		return;
+
+	static auto m_yaw = I::ConVar->FindVar(_("m_yaw"));
+
+	static auto sensitivity = I::ConVar->FindVar(_("sensitivity"));
+
+	static float Previous_View_Angles_Y = cmd->angViewPoint.y;
+
+	{
+		if (cmd->flForwardMove == 0 && cmd->iButtons & IN_JUMP) if (auto Velocity = pLocal->GetVelocity(); Velocity.Length2D() > C::Get<int>(Vars.iStrafeOptimizer_Min_Speed))
+		{
+			I::Prediction->Update(I::ClientState->iDeltaTick,
+				I::ClientState->iDeltaTick > 0, I::ClientState->nLastCommandAck,
+				I::ClientState->nLastOutgoingCommand + I::ClientState->iChokedCommands);
+
+			float Mouse_Yaw_Factor = m_yaw->GetFloat();
+
+			float Mouse_Sensitivity = sensitivity->GetFloat();
+
+			float Mouse_Yaw_Step = Mouse_Sensitivity * Mouse_Yaw_Factor;
+
+			if (cmd->flSideMove < 0)
+			{
+				if (Previous_View_Angles_Y - cmd->angViewPoint[1] < 0)
+				{
+					float Strafe_Angle = remainderf(cmd->angViewPoint[1] - atan2f(Velocity[1], Velocity[0]) * 180 / M_PI, 360) * C::Get<int>(Vars.iStrafeOptimizer_Desired_Gain) / 100;
+
+					if (Strafe_Angle < -Mouse_Yaw_Step)
+					{
+						if (Strafe_Angle < -180)
+						{
+							Strafe_Angle = -180;
+						}
+
+						cmd->angViewPoint[1] = remainderf(cmd->angViewPoint[1] - Mouse_Yaw_Step * roundf(Strafe_Angle / Mouse_Yaw_Step), 360);
+
+						cmd->sMouseDeltaX = (__int16)(Mouse_Sensitivity * ceilf(remainderf(Previous_View_Angles_Y - cmd->angViewPoint[1], 360) / sqrtf(Mouse_Yaw_Step)));
+
+						I::Engine->SetViewAngles(cmd->angViewPoint);
+					}
+				}
+			}
+			else
+			{
+				if (cmd->flSideMove > 0)
+				{
+					if (Previous_View_Angles_Y - cmd->angViewPoint[1] > 0)
+					{
+						float Strafe_Angle = remainderf(cmd->angViewPoint[1] - atan2f(Velocity[1], Velocity[0]) * 180 / M_PI, 360) * C::Get<int>(Vars.iStrafeOptimizer_Desired_Gain)/ 100;
+
+						if (Strafe_Angle > Mouse_Yaw_Step)
+						{
+							if (Strafe_Angle > 180)
+							{
+								Strafe_Angle = 180;
+							}
+
+							cmd->angViewPoint[1] = remainderf(cmd->angViewPoint[1] - Mouse_Yaw_Step * roundf(Strafe_Angle / Mouse_Yaw_Step), 360);
+
+							cmd->sMouseDeltaX = (__int16)(Mouse_Sensitivity * ceilf(remainderf(Previous_View_Angles_Y - cmd->angViewPoint[1], 360) / sqrtf(Mouse_Yaw_Step)));
+
+							I::Engine->SetViewAngles(cmd->angViewPoint);
+						}
+					}
+				}
+			}
+		}
+
+		Previous_View_Angles_Y = cmd->angViewPoint[1];
+	}
+}
 
 
 void CMiscellaneous::MouseDelta(CUserCmd* pCmd, CBaseEntity* pLocal)
