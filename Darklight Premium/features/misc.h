@@ -156,6 +156,7 @@ public:
 	void EdgeJump(CUserCmd* pCmd, CBaseEntity* pLocal, int iFlags);
 	void StrafeOptimizer(CUserCmd* pCmd, CBaseEntity* pLocal);
 	void NullStrafe(CUserCmd* pCmd, CBaseEntity* pLocal);
+	void MiniJump(CUserCmd* pCmd, CBaseEntity* pLocal);
 
 	void Blockbot(CUserCmd* pCmd, CBaseEntity* pLocal);
 	void MovementRecorder(CUserCmd* pCmd, CBaseEntity* pLocal);

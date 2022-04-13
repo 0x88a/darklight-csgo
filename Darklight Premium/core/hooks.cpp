@@ -219,6 +219,7 @@ bool FASTCALL H::hkCreateMove(IClientModeShared* thisptr, int edx, float flInput
 	g_Misc.JumpBug(pCmd, pLocal, iFlags);
 	g_Misc.EdgeBug(pCmd, pLocal, iFlags);
 	g_Misc.StrafeOptimizer(pCmd, pLocal);
+	g_Misc.MiniJump(pCmd, pLocal);
 	g_Misc.MovementRecorder(pCmd, pLocal);
 
 	g_Misc.CorrectMovement(pLocal, pCmd, angOldViewPoint);

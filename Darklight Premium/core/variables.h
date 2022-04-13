@@ -190,6 +190,10 @@ struct Variables_t
 	C_ADDVARIABLE(int, iStrafeOptimizer_Min_Speed, 250);
 	C_ADDVARIABLE(int, iStrafeOptimizer_Desired_Gain, 50);
 
+	C_ADDVARIABLE(bool, bMiniJump, false);
+	C_ADDVARIABLE(int, iMiniJump_Key, 0);
+	C_ADDVARIABLE(int, iMiniJump_Key_Method, 1);
+
 	C_ADDVARIABLE(int, iEdgeBugKey, 0);
 	C_ADDVARIABLE(int, iEdgeBugKeyMethod, 1);
 	C_ADDVARIABLE(bool, bEdgeBug, 0);
