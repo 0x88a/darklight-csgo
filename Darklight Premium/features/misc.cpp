@@ -384,8 +384,34 @@ void CMiscellaneous::StrafeOptimizer(CUserCmd* cmd, CBaseEntity* pLocal)
 		Previous_View_Angles_Y = cmd->angViewPoint[1];
 	}
 }
-
-
+void CMiscellaneous::MiniJump(CUserCmd* pCmd, CBaseEntity* pLocal)
+{
+	static bool bToggled = false;
+	if (!C::Get<bool>(Vars.bMiniJump) ||
+		!GUI::UTILS::KeybindMethod(C::Get<int>(Vars.iMiniJump_Key), C::Get<int>(Vars.iMiniJump_Key_Method), &bToggled))
+		return;
+	if (!pLocal || !pLocal->IsAlive())
+		return;
+	if (const auto mt = pLocal->GetMoveType(); mt == MOVETYPE_LADDER|| mt == MOVETYPE_NOCLIP)
+		return;
+	static int minijump_tick = 0;
+	static bool minijumpbool = false;
+	if ((pLocal->GetFlags() & 1) && !(pLocal->GetFlags() & 1))
+	{
+		pCmd->iButtons |= IN_JUMP;
+		minijumpbool = true;
+		minijump_tick = pCmd->iTickCount + 1;
+	}
+	if (minijumpbool)
+	{
+		if (pCmd->iTickCount < minijump_tick)
+		{
+			pCmd->iButtons |= IN_DUCK;
+			I::Engine->ClientCmd_Unrestricted(_("-forward"));
+			pCmd->iButtons &= ~IN_BACK;
+		}
+	}
+}
 void CMiscellaneous::MouseDelta(CUserCmd* pCmd, CBaseEntity* pLocal)
 {
 	static QAngle angDeltaAngles;

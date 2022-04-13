@@ -491,6 +491,9 @@ void GUI::Run()
 					
 				}
 
+				CONTROLS::Keybind(_("MINIJUMP_KEY"), &C::Get<int>(Vars.iMiniJump_Key), &C::Get<int>(Vars.iMiniJump_Key_Method));
+				CONTROLS::Checkbox(_("Mini Jump"), &C::Get<bool>(Vars.bMiniJump));
+
 				CONTROLS::Keybind(_("blockbot"), &C::Get<int>(Vars.iBlockbotKey), &C::Get<int>(Vars.iBlockbotKeyMethod));
 				CONTROLS::Combobox(_("Blockbot"), { _("Off"), _("Match speed"), _("Maximum") }, &C::Get<int>(Vars.iBlockbot));
 			}
