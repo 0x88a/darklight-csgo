@@ -270,7 +270,6 @@ void CMiscellaneous::Blockbot(CUserCmd* pCmd, CBaseEntity* pLocal)
 
 	float flBestDistance = 250.0f;
 	int iBestIndex = -1;
-
 	for (auto i = 1; i < I::Globals->nMaxClients; i++) {
 		CBaseEntity* pEntity = I::ClientEntityList->Get<CBaseEntity>(i);
 		if (!pEntity || pEntity->IsDormant() || !pEntity->IsAlive() ||
