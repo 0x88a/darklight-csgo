@@ -27,12 +27,7 @@ namespace D
 	inline unsigned long uMenuSliderFont[5];
 	inline unsigned long uTrebuchetMS[5];
 
-	inline int ScaleDPI(int i)
-	{
-		return (i * (1.0f + (0.25f * G::iDPIScale)));
-	}
-
-	inline int ScaleDPI(int i, int x)
+	inline int ScaleDPI(int i, int x = G::iDPIScale)
 	{
 		return (i * (1.0f + (0.25f * x)));
 	}
