@@ -1,17 +1,15 @@
 #pragma once
-// used: std::runtime_error
-#include <stdexcept>
+// used: std::size_t, std::byte
+#include <cstddef>
+// used: std::uint16_t
+#include <cstdint>
 
-// used: winapi includes, call vfunc
-#include "../../common.h"
-
-using KeyValuesSystemFn = void*(__cdecl*)();
 using GetSymbolProcFn = bool(__cdecl*)(const char*);
 
 class CKeyValues
 {
 public:
-	enum EKeyTypes : int
+	enum EKeyType : int
 	{
 		TYPE_NONE = 0,
 		TYPE_STRING,
@@ -27,112 +25,52 @@ public:
 		TYPE_NUMTYPES
 	};
 
-	void* operator new(std::size_t nAllocSize)
-	{
-		static void* pKeyValuesSystem = nullptr;
-		if (pKeyValuesSystem == nullptr)
-		{
-			KeyValuesSystemFn oKeyValuesSystem = (KeyValuesSystemFn)GetProcAddress(GetModuleHandle(VSTDLIB_DLL), _("KeyValuesSystem"));
+	CKeyValues(const char* szKeyName);
 
-			if (oKeyValuesSystem == nullptr)
-				throw std::runtime_error(_("failed to get keyvaluessystem export"));
+	void* operator new(std::size_t nAllocSize);
+	void operator delete(void* pMemory);
 
-			pKeyValuesSystem = oKeyValuesSystem();
-		}
+	const char* GetName();
 
-		return MEM::CallVFunc<void*>(pKeyValuesSystem, 1, nAllocSize);
-	}
+	static CKeyValues* FromString(const char* szName, const char* szValue);
+	void LoadFromBuffer(char const* szResourceName, const char* szBuffer, void* pFileSystem = nullptr, const char* szPathID = nullptr, GetSymbolProcFn pfnEvaluateSymbolProc = nullptr);
+	bool LoadFromFile(void* pFileSystem, const char* szResourceName, const char* szPathID = nullptr, GetSymbolProcFn pfnEvaluateSymbolProc = nullptr);
 
-	void operator delete(void* pMemory)
-	{
-		static void* pKeyValuesSystem = nullptr;
-		if (pKeyValuesSystem == nullptr)
-		{
-			KeyValuesSystemFn oKeyValuesSystem = (KeyValuesSystemFn)GetProcAddress(GetModuleHandle(VSTDLIB_DLL), _("KeyValuesSystem"));
+	CKeyValues* FindKey(const char* szKeyName, const bool bCreate);
 
-			if (oKeyValuesSystem == nullptr)
-				throw std::runtime_error(_("failed to get keyvaluessystem export"));
+	int GetInt(const char* szKeyName, const int iDefaultValue);
+	float GetFloat(const char* szKeyName, const float flDefaultValue);
+	const char* GetString(const char* szKeyName, const char* szDefaultValue);
 
-			pKeyValuesSystem = oKeyValuesSystem();
-		}
+	void SetString(const char* szKeyName, const char* szStringValue);
+	void SetInt(const char* szKeyName, const int iValue);
+	void SetUint64(const char* szKeyName, const int nLowValue, const int nHighValue);
 
-		MEM::CallVFunc<void>(pKeyValuesSystem, 2, pMemory);
-	}
-
-	const char* GetName()
-	{
-		static void* pKeyValuesSystem = nullptr;
-		if (pKeyValuesSystem == nullptr)
-		{
-			KeyValuesSystemFn oKeyValuesSystem = (KeyValuesSystemFn)GetProcAddress(GetModuleHandle(VSTDLIB_DLL), _("KeyValuesSystem"));
-
-			if (oKeyValuesSystem == nullptr)
-				throw std::runtime_error(_("failed to get keyvaluessystem export"));
-
-			pKeyValuesSystem = oKeyValuesSystem();
-		}
-
-		typedef const char* (__thiscall* oGetName)(PVOID, int);
-		return MEM::CallVFunc<const char*>(pKeyValuesSystem, 4, *(std::uint8_t*)((std::uintptr_t)this + 0x3) | (*(std::uint16_t*)((std::uintptr_t)this + 0x12) << 8));
-	}
-
-	void Init(const char* szKeyName)
-	{
-		using InitKeyValuesFn = void(__thiscall*)(void*, const char*);
-		static auto oInitKeyValues = (InitKeyValuesFn)(MEM::FindPattern(CLIENT_DLL, _("55 8B EC 51 33 C0 C7 45"))); // @xref: "OldParticleSystem_Destroy"
-
-		if (oInitKeyValues == nullptr)
-			return;
-
-		oInitKeyValues(this, szKeyName);
-	}
-
-	void LoadFromBuffer(char const* szResourceName, const char* szBuffer, void* szFileSystem = nullptr, const char* szPathID = nullptr, void* pfnEvaluateSymbolProc = nullptr)
-	{
-		using LoadFromBufferFn = void(__thiscall*)(void*, const char*, const char*, void*, const char*, void*, void*);
-		static auto oLoadFromBuffer = (LoadFromBufferFn)(MEM::FindPattern(CLIENT_DLL, _("55 8B EC 83 E4 F8 83 EC 34 53 8B 5D 0C 89"))); // @xref: "KeyValues::LoadFromBuffer(%s%s%s): Begin"
-
-		if (oLoadFromBuffer == nullptr)
-			return;
-
-		oLoadFromBuffer(this, szResourceName, szBuffer, szFileSystem, szPathID, pfnEvaluateSymbolProc, nullptr);
-	}
-
-	CKeyValues* FindKey(const char* szKeyName, bool bCreate)
-	{
-		using FindKeyFn = CKeyValues * (__thiscall*)(CKeyValues*, const char*, bool);
-		static auto oFindKey = (FindKeyFn)(MEM::FindPattern(CLIENT_DLL, _("55 8B EC 83 EC 1C 53 8B D9 85 DB")));
-		return oFindKey(this, szKeyName, bCreate);
-	}
-
-	void SetString(const char* szKeyName, const char* szValue)
-	{
-		CKeyValues* pKey = FindKey(szKeyName, true);
-
-		if (pKey == nullptr)
-			return;
-
-		using SetStringFn = void(__thiscall*)(void*, const char*);
-		static auto oSetString = (SetStringFn)(MEM::FindPattern(CLIENT_DLL, _("55 8B EC A1 ? ? ? ? 53 56 57 8B F9 8B 08 8B 01")));
-		oSetString(pKey, szValue);
-	}
-
-	void SetInt(const char* szKeyName, int iValue)
-	{
-		CKeyValues* pKey = FindKey(szKeyName, true);
-
-		if (pKey == nullptr)
-			return;
-
-		*(int*)((uintptr_t)pKey + 0xC) = iValue;
-		*(char*)((uintptr_t)pKey + 0x10) = 2;
-	}
-
-	inline void SetBool(const char* szKeyName, bool bValue)
+	inline void SetBool(const char* szKeyName, const bool bValue)
 	{
 		SetInt(szKeyName, bValue ? 1 : 0);
 	}
 
 private:
-	std::byte		pad0[0x24];
-}; // Size: 0x0024
+	std::uint32_t uKeyName : 24; // 0x00
+	std::uint32_t uKeyNameCaseSensitive1 : 8; // 0x3 // byte, explicitly specify bits due to packing
+	char* szValue;	// 0x04
+	wchar_t* wszValue;	// 0x08
+
+	union
+	{
+		int iValue;
+		float flValue;
+		void* pValue;
+		unsigned char arrColor[4];
+	}; // 0x0C
+
+	char chType; // 0x10
+	bool bHasEscapeSequences; // 0x11
+	std::uint16_t uKeyNameCaseSensitive2; // 0x12
+	CKeyValues* pPeer; // 0x14
+	CKeyValues* pSub;	// 0x18
+	CKeyValues* pChain;// 0x1C
+	GetSymbolProcFn	pExpressionGetSymbolProc; // 0x20
+};
+static_assert(sizeof(CKeyValues) == 0x24);

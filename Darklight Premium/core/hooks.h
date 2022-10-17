@@ -82,6 +82,9 @@ namespace VTABLE
 		/* netchannel table */
 		SENDNETMSG = 40,
 		SENDDATAGRAM = 46,
+
+		/* keyvaluessystem table */
+		ALLOCKEYVALUESMEMORY = 2,
 	};
 }
 
@@ -127,6 +130,7 @@ namespace DTR
 	inline CDetourHook FireGameEvent;
 	inline CDetourHook Shutdown;
 	inline CDetourHook GetColorModulation;
+	inline CDetourHook AllocKeyValuesMemory;
 }
 
 /*
@@ -336,6 +340,7 @@ namespace H
      
     }
 	*/
+	void* FASTCALL	hkAllocKeyValuesMemory(IKeyValuesSystem* thisptr, int edx, int iSize);
 }
 
 /*

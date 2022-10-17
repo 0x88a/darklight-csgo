@@ -120,4 +120,9 @@ namespace MEM
 		using VirtualFn = T(__thiscall*)(void*, decltype(argList)...);
 		return (*(VirtualFn**)thisptr)[nIndex](thisptr, argList...);
 	}
+
+	inline std::uintptr_t GetAbsoluteAddress(const std::uintptr_t uRelativeAddress)
+	{
+		return uRelativeAddress + 0x4 + *reinterpret_cast<std::int32_t*>(uRelativeAddress);
+	}
 }

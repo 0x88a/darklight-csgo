@@ -876,15 +876,20 @@ IMaterial* CVisuals::CreateMaterial(std::string_view szName, std::string_view sz
 		}}
 	}})#"), fmt::arg(_("shader"), szShader), fmt::arg(_("texture"), szBaseTexture), fmt::arg(_("envmap"), szEnvMap), fmt::arg(_("ignorez"), bIgnorez ? 1 : 0), fmt::arg(_("wireframe"), bWireframe ? 1 : 0), fmt::arg(_("proxies"), szProxies));
 	
-	CKeyValues* pKeyValues = (CKeyValues*)CKeyValues::operator new(sizeof(CKeyValues));
-	pKeyValues->Init(szShader.data());
+	// load to memory
+	CKeyValues* pKeyValues = new CKeyValues(szShader.data());
 	pKeyValues->LoadFromBuffer(szName.data(), szMaterial.c_str());
 
+	// create from buffer
 	return I::MaterialSystem->CreateMaterial(szName.data(), pKeyValues);
 }
 
 bool CVisuals::Chams(CBaseEntity* pLocal, DrawModelResults_t* pResults, const DrawModelInfo_t& info, matrix3x4_t* pBoneToWorld, float* flFlexWeights, float* flFlexDelayedWeights, const Vector& vecModelOrigin, int nFlags)
 {
+	// seems to crash on CreateMaterial if not checking localplayer? idk too lazy to investigate, inject while in game to avoid crash
+	if (!G::pLocal)
+		return false;
+
 	static auto oDrawModel = DTR::DrawModel.GetOriginal<decltype(&H::hkDrawModel)>();
 	if (!info.pClientEntity)
 		return false;

@@ -380,6 +380,9 @@
     <ClInclude Include="features\ragebot.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\interfaces\ikeyvaluessystem.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="features\triggerbot.cpp">
@@ -527,6 +530,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="features\ragebot.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\datatypes\keyvalues.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

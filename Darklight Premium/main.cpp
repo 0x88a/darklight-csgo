@@ -81,23 +81,6 @@ DWORD WINAPI OnDllAttach(LPVOID lpParameter)
 		while (GetModuleHandle(SERVERBROWSER_DLL) == nullptr)
 			std::this_thread::sleep_for(200ms);
 
-		long amongus = 0x69690004C201B0;
-		static std::string sig = ("55 8B EC 56 8B F1 33 C0 57 8B 7D 08");
-
-		LPCWSTR modules[]
-		{
-			L"client.dll",
-			L"engine.dll",
-			L"server.dll",
-			L"studiorender.dll",
-			L"materialsystem.dll"
-		};
-
-		// bypass.
-		for (auto base : modules) {
-			WriteProcessMemory(GetCurrentProcess(), find_sig_ida(GetModuleHandleW(base), sig), &amongus, 5, 0);
-		}
-
 		// init interfaces.
 		I::Setup();
 
