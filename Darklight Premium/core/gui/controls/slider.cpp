@@ -56,7 +56,10 @@ void GUI::CONTROLS::Slider(const std::string& szName, int* pValue, int iMin, int
 
 	D::OutlinedRect(m_vOffset.x + 21, m_vOffset.y + 15, iSliderSize, 7, Color(0, 0, 0, CONTROLS::m_flMenuAlpha));
 
-	std::string szValue = std::to_string(*pValue) + szPrefix;
+	/* round it to 3 decimals */
+	std::string szToStr = std::to_string(*pValue);
+	std::string szValue = szToStr.substr(0, szToStr.find(".") + 3);
+
 	if (bHealthPlus && *pValue > 100)
 		szValue = "HP+" + std::to_string(*pValue - 100);
 
