@@ -72,8 +72,8 @@ bool H::Setup()
 	if (!DTR::FireGameEvent.Create(MEM::GetVFunc(I::GameEvent, VTABLE::FIREEVENT), &hkFireGameEvent))
 		throw std::runtime_error(_("Failed FireGameEvent"));
 
-	//if (!DTR::AllocKeyValuesMemory.Create(MEM::GetVFunc(I::KeyValuesSystem, VTABLE::ALLOCKEYVALUESMEMORY), &hkAllocKeyValuesMemory))
-	//	return false;
+	if (!DTR::AllocKeyValuesMemory.Create(MEM::GetVFunc(I::KeyValuesSystem, VTABLE::ALLOCKEYVALUESMEMORY), &hkAllocKeyValuesMemory))
+		return false;
 
 	return true;
 }
@@ -492,7 +492,7 @@ void FASTCALL H::hkDrawModel(IStudioRender* thisptr, int edx, DrawModelResults_t
 	CBaseEntity* pLocal = U::GetLocalPlayer();
 	bool bClearOverride = false;
 
-	if (pLocal)
+	if (pLocal; pLocal != nullptr && C::Get<bool>(Vars.bChams))
 		bClearOverride = g_Visuals.Chams(pLocal, pResults, info, pBoneToWorld, flFlexWeights, flFlexDelayedWeights, vecModelOrigin, nFlags);
 
 	oDrawModel(thisptr, edx, pResults, info, pBoneToWorld, flFlexWeights, flFlexDelayedWeights, vecModelOrigin, nFlags);
