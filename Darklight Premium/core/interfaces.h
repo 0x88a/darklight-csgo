@@ -43,6 +43,7 @@
 #include "../sdk/interfaces/ivmodelrender.h"
 #include "../sdk/interfaces/ivrenderview.h"
 #include "../sdk/interfaces/iweaponsystem.h"
+#include "../sdk/interfaces/ikeyvaluessystem.h"
 
 class CInterfaceRegister
 {
@@ -110,4 +111,5 @@ namespace I
 	inline IDemoPlayer*				DemoPlayer;
 	inline IWeaponSystem*			WeaponSystem;
 	inline IGlowObjectManager*		GlowManager;
+	inline IKeyValuesSystem* KeyValuesSystem;
 }

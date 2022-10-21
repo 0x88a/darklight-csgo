@@ -72,6 +72,9 @@ bool H::Setup()
 	if (!DTR::FireGameEvent.Create(MEM::GetVFunc(I::GameEvent, VTABLE::FIREEVENT), &hkFireGameEvent))
 		throw std::runtime_error(_("Failed FireGameEvent"));
 
+	if (!DTR::AllocKeyValuesMemory.Create(MEM::GetVFunc(I::KeyValuesSystem, VTABLE::ALLOCKEYVALUESMEMORY), &hkAllocKeyValuesMemory))
+		return false;
+
 	return true;
 }
 
@@ -489,7 +492,7 @@ void FASTCALL H::hkDrawModel(IStudioRender* thisptr, int edx, DrawModelResults_t
 	CBaseEntity* pLocal = U::GetLocalPlayer();
 	bool bClearOverride = false;
 
-	if (pLocal)
+	if (pLocal; pLocal != nullptr && C::Get<bool>(Vars.bChams))
 		bClearOverride = g_Visuals.Chams(pLocal, pResults, info, pBoneToWorld, flFlexWeights, flFlexDelayedWeights, vecModelOrigin, nFlags);
 
 	oDrawModel(thisptr, edx, pResults, info, pBoneToWorld, flFlexWeights, flFlexDelayedWeights, vecModelOrigin, nFlags);
@@ -659,6 +662,21 @@ bool FASTCALL H::hkIsHLTV(void* pThis, void* edx)
 		return true;
 
 	return oIsHLTV(pThis, edx);
+}
+
+void* __fastcall H::hkAllocKeyValuesMemory(IKeyValuesSystem* thisptr, int edx, int iSize)
+{
+	static auto oAllocKeyValuesMemory = DTR::AllocKeyValuesMemory.GetOriginal<decltype(&hkAllocKeyValuesMemory)>();
+
+	// return addresses of check function
+	// @credits: danielkrupinski
+	static const std::uintptr_t uAllocKeyValuesEngine = MEM::GetAbsoluteAddress(MEM::FindPattern(ENGINE_DLL, _("E8 ? ? ? ? 83 C4 08 84 C0 75 10 FF 75 0C")) + 0x1) + 0x4A;
+	static const std::uintptr_t uAllocKeyValuesClient = MEM::GetAbsoluteAddress(MEM::FindPattern(CLIENT_DLL, _("E8 ? ? ? ? 83 C4 08 84 C0 75 10")) + 0x1) + 0x3E;
+
+	if (const std::uintptr_t uReturnAddress = reinterpret_cast<std::uintptr_t>(_ReturnAddress()); uReturnAddress == uAllocKeyValuesEngine || uReturnAddress == uAllocKeyValuesClient)
+		return nullptr;
+
+	return oAllocKeyValuesMemory(thisptr, edx, iSize);
 }
 
 void FASTCALL H::hkGetColorModulation(void* ecx, void* edx, float* r, float* g, float* b)

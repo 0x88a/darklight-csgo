@@ -40,7 +40,7 @@ public:
 	Color operator+(Color colOther)
 	{
 		return Color(
-			std::min<uint8_t>(255, this->arrColor.at(0) + colOther.r()), 
+			std::min<uint8_t>(255, this->arrColor.at(0) + colOther.r()),
 			std::min<uint8_t>(255, this->arrColor.at(1) + colOther.g()),
 			std::min<uint8_t>(255, this->arrColor.at(2) + colOther.b()));
 	}

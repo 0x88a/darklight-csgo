@@ -91,6 +91,10 @@ bool I::Setup()
 	if (GlowManager == nullptr)
 		return false;
 
+	KeyValuesSystem = reinterpret_cast<KeyValuesSystemFn>(GetProcAddress(GetModuleHandle(VSTDLIB_DLL), _("KeyValuesSystem")))();
+	if (KeyValuesSystem == nullptr)
+		return false;
+
 	return true;
 }
 
