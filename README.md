@@ -3,3 +3,5 @@
 
 ## Darklight
 A CS:GO Utility Software
+
+## Disclaimer: I don't encourage cheating in lobbies with actual people, please only use this with bots as shown in the video :)
